@@ -4,9 +4,10 @@
 }
 
 .bg-user {
-	background: rgba(58, 223, 132, 0.796);
-	/* background: linear-gradient(88deg, rgba(91, 192, 99, 1) 0%, rgba(136, 220, 1437, 1) 96%); */
+	background: rgb(54, 65, 80);
+	background: linear-gradient(88deg, rgba(54, 65, 80, 1) 0%, rgba(43, 54, 67, 1) 96%);
 }
+
 
 .presensi-list-scrollable {
 	height: 20rem;

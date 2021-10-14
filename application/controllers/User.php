@@ -22,6 +22,17 @@ class User extends CI_Controller
         $this->load->view('user/index');
         $this->load->view('templates/user_footer');
     }
+
+    public function get_new()
+    {
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $this->load->view('templates/user_header');
+        $this->load->view('templates/user_sidebar');
+        $this->load->view('templates/user_topbar', $data);
+        $this->load->view('user/new');
+        $this->load->view('templates/user_footer');
+    }
 }
 
 /* End of file User.php */
