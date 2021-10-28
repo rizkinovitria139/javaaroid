@@ -120,6 +120,51 @@
         </div>
         <!-- End Tambah Kelas Modal -->
 
+        <!-- Plants Edit Modal -->
+        <?php foreach ($plants as $p) : ?>
+            <div class="modal fade" id="editplantsModal<?= $p['id_plants'] ?>" tabindex="-1" kelas="dialog" aria-labelledby="editplantsModal<?= $p['id_plants']; ?>Label" aria-hidden="true">
+                <div class="modal-dialog" kelas="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editMenuModal<?= $p['id_plants'] ?>">Plants Edit</h5>
+                            <buttond type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </buttond>
+                        </div>
+                        <form action="<?= base_url('admin/edit_plants/' . $p['id_plants']); ?>" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <span>Plants ID</span>
+                                    <input type="text" class="form-control" readonly value="<?= $p['id_plants']; ?>" id="id_plants" name="id_plants">
+                                </div>
+                                <div class="form-group">
+                                    <span>Nama</span>
+                                    <input type="text" class="form-control" value="<?= $p['nama']; ?>" id="nama" name="nama" placeholder="Name of plants">
+                                </div>
+
+                                <span>Type</span>
+                                <div class="form-group">
+                                    <select class="form-control" name="jenis" id="jenis">
+                                        <option value="<?= $p['jenis']; ?>" selected><?php echo $p['jenis']; ?></option>
+                                        <option value="Anthurium">Anthurium</option>
+                                        <option value="Epipremnum">Epipremnum</option>
+                                        <option value="Monsterra">Monsterra</option>
+                                        <option value="Philodendron">Philodendron</option>
+                                        <option value="Scindapsus">Scindapsus</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        <!-- End Edit Modal -->
+
 
 
 

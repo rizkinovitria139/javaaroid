@@ -25,6 +25,11 @@ class Plants_model extends CI_Model
     {
         return $this->db->insert($this->_table, $data);
     }
+
+    public function delete_plants($id)
+    {
+        return $this->db->delete('plants', array('id_plants' => $id));
+    }
 }
 
 /* End of file Plants_model.php */

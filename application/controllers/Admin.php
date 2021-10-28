@@ -64,6 +64,23 @@ class Admin extends CI_Controller
             redirect('admin/get_plants');
         }
     }
+
+    public function edit_plants($id)
+    {
+        $this->db->update('plants', ['nama' => $this->input->post('nama')], ['id_plants' => $id]);
+        $this->db->update('plants', ['jenis' => $this->input->post('jenis')], ['id_plants' => $id]);
+        $this->session->set_flashdata('plants_message', '<div class="alert alert-success" role="alert">Plants update success!</div>');
+        redirect('admin/get_plants', 'refresh');
+    }
+
+    public function delete_plants($id)
+    {
+        $this->load->model('plants_model', 'plants');
+        $this->plants->delete_plants($id);
+        // untuk flashdata mempunyai 2 parameter (nama flashdata/alias, isi dari flashdatanya)
+        $this->session->set_flashdata('plants_message', '<div class="alert alert-success" role="alert">Delete plant success!</div>');
+        redirect('admin/get_plants', 'refresh');
+    }
     // End of plants
 }
 
