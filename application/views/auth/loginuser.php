@@ -14,6 +14,7 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-block create-account">Login</button>
+            </div>
         </form>
     </div>
 </body>
