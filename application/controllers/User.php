@@ -14,7 +14,7 @@ class User extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
         $data['title'] = 'Dashboard-user';
         $this->load->view('templates/user_header', $data);
@@ -26,7 +26,7 @@ class User extends CI_Controller
 
     public function get_new()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
         $data['title'] = 'New-Input';
         $this->load->view('templates/user_header', $data);

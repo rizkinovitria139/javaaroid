@@ -7,7 +7,7 @@ class Admin extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
         $data['title'] = 'Dashboard User';
         $this->load->view('templates/admin_header', $data);
@@ -19,7 +19,7 @@ class Admin extends CI_Controller
 
     public function get_new()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
         $data['title'] = 'New - Input';
         $this->load->view('templates/admin_header', $data);
@@ -32,7 +32,7 @@ class Admin extends CI_Controller
     // Begin of plants
     public function get_plants()
     {
-        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
         $data['title'] = 'Plants';
 
@@ -60,7 +60,7 @@ class Admin extends CI_Controller
             $this->session->set_flashdata('plants_message', '<div class="alert alert-success" role="alert">Input plants success!</div>');
             redirect('admin/get_plants');
         } else {
-            $this->session->set_flashdata('kelasw_message', '<div class="alert alert-danger" role="alert">Input plants failed!</div>');
+            $this->session->set_flashdata('plants_message', '<div class="alert alert-danger" role="alert">Input plants failed!</div>');
             redirect('admin/get_plants');
         }
     }
@@ -82,6 +82,112 @@ class Admin extends CI_Controller
         redirect('admin/get_plants', 'refresh');
     }
     // End of plants
+
+    // Start of user
+    public function get_user()
+    {
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $data['title'] = 'User';
+
+        $this->load->model('user_model', 'user');
+        $data['user'] = $this->user->get_user();
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('templates/admin_sidebar');
+        $this->load->view('templates/admin_topbar', $data);
+        $this->load->view('admin/user', $data);
+        // $this->load->view('templates/admin_footer');
+    }
+
+    public function get_user_admin()
+    {
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $data['title'] = 'User';
+
+        $this->load->model('user_model', 'user');
+        $data['user'] = $this->user->get_user_admin();
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('templates/admin_sidebar');
+        $this->load->view('templates/admin_topbar', $data);
+        $this->load->view('admin/user', $data);
+        // $this->load->view('templates/admin_footer');
+    }
+
+    public function get_user_user()
+    {
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $data['title'] = 'User';
+
+        $this->load->model('user_model', 'user');
+        $data['user'] = $this->user->get_user_user();
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('templates/admin_sidebar');
+        $this->load->view('templates/admin_topbar', $data);
+        $this->load->view('admin/user', $data);
+        // $this->load->view('templates/admin_footer');
+    }
+
+    public function add_user()
+    {
+        $this->form_validation->set_rules('nama', 'Name of User', 'required');
+        $this->form_validation->set_rules('alamat', 'Address of User', 'required');
+        $this->form_validation->set_rules('no_telp', 'Telp Number of User', 'required');
+        $this->form_validation->set_rules('email', 'Email of User', 'required');
+        $this->form_validation->set_rules('username', 'Username of User', 'required');
+        $this->form_validation->set_rules('password', 'Password of User', 'required');
+        $this->form_validation->set_rules('role', 'Role of user', 'required');
+        $this->form_validation->set_rules('is_active', 'User activation', 'required');
+
+        if ($this->form_validation->run() == true) {
+            $data['nama'] = $this->input->post('nama');
+            $data['alamat'] = $this->input->post('alamat');
+            $data['no_telp'] = $this->input->post('no_telp');
+            $data['email'] = $this->input->post('email');
+            $data['username'] = $this->input->post('username');
+            $data['password'] = $this->input->post('password');
+            $data['role'] = $this->input->post('role');
+            $data['is_active'] = $this->input->post('is_active');
+
+            $this->load->model('user_model', 'user');
+            $this->user->add_user($data);
+            $this->session->set_flashdata('user_message', '<div class="alert alert-success" role="alert">Input user success!</div>');
+            redirect('admin/get_user');
+        } else {
+            $this->session->set_flashdata('user_message', '<div class="alert alert-danger" role="alert">Input user failed!</div>');
+            redirect('admin/get_user');
+        }
+    }
+
+    public function edit_user($id)
+    {
+        $this->db->update('user', ['nama' => $this->input->post('nama')], ['id_user' => $id]);
+        $this->db->update('user', ['alamat' => $this->input->post('alamat')], ['id_user' => $id]);
+        $this->db->update('user', ['no_telp' => $this->input->post('no_telp')], ['id_user' => $id]);
+        $this->db->update('user', ['email' => $this->input->post('email')], ['id_user' => $id]);
+        $this->db->update('user', ['username' => $this->input->post('username')], ['id_user' => $id]);
+        $this->db->update('user', ['password' => $this->input->post('password')], ['id_user' => $id]);
+        $this->db->update('user', ['role' => $this->input->post('role')], ['id_user' => $id]);
+        $this->db->update('user', ['is_active' => $this->input->post('is_active')], ['id_user' => $id]);
+        $this->session->set_flashdata('user_message', '<div class="alert alert-success" role="alert">User update success!</div>');
+        redirect('admin/get_user', 'refresh');
+    }
+
+    public function delete_user($id)
+    {
+        $this->load->model('user_model', 'user');
+        $this->user->delete_user($id);
+        // untuk flashdata mempunyai 2 parameter (nama flashdata/alias, isi dari flashdatanya)
+        $this->session->set_flashdata('user_message', '<div class="alert alert-success" role="alert">Delete user success!</div>');
+        redirect('admin/get_user', 'refresh');
+    }
+
+    // End of user
+
 }
 
 /* End of file Admin.php */
