@@ -4,6 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class User_model extends CI_Model
 {
+    private $_tabel = 'user';
 
     public function checkAccount()
     {
@@ -50,7 +51,7 @@ class User_model extends CI_Model
 
     public function add_user($data)
     {
-        return $this->db->insert($this->_table, $data);
+        return $this->db->insert($this->_tabel, $data);
     }
 
     public function delete_user($id)

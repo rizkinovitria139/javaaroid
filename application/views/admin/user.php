@@ -194,9 +194,9 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" id="username" name="username" placeholder="username">
                             </div>
-                            <span>is_active</span>
+                            <span>Password</span>
                             <div class="form-group">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="password">
+                                <input type="text" class="form-control" id="password" name="password" placeholder="password">
                             </div>
                             <span>Active</span>
                             <div class="form-group">
