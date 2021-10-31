@@ -3,7 +3,7 @@
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Plants</h1>
+                <h1 class="h3 mb-0 text-gray-800">Member of user</h1>
 
             </div>
 
@@ -15,7 +15,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <button class="btn btn-warning" data-toggle="modal" data-target="#tambahplantsModal">New Plants</button>
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#tambahmemberModal">New Member</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -24,7 +24,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Name</th>
-                                            <th>Type</th>
+                                            <th>User</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -32,24 +32,24 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Name</th>
-                                            <th>Type</th>
+                                            <th>User</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         <?php $i = 1; ?>
-                                        <?php foreach ($plants as $p) : ?>
+                                        <?php foreach ($member as $m) : ?>
 
                                             <!-- perulangan buat data new -->
                                             <tr>
                                                 <td><?= $i; ?></td>
-                                                <td><?= $p['nama']; ?></td>
-                                                <td><?= $p['jenis']; ?></td>
+                                                <td><?= $m['nama_member']; ?></td>
+                                                <td><?php echo $m['user_id'] . ' - ' . $m['nama']; ?></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary btn-icon" href="" data-toggle="modal" data-target="#editplantsModal<?= $p['id_plants']; ?>">
+                                                    <button type="button" class="btn btn-primary btn-icon" href="" data-toggle="modal" data-target="#editmemberModal<?= $m['id_member']; ?>">
                                                         <i class="far fa-edit"></i>
                                                     </button>
-                                                    <a class="btn btn-danger" href="<?= base_url('admin/delete_plants/') . $p['id_plants']; ?>" onclick="return confirm('Are you sure to delete this data ?');">
+                                                    <a class="btn btn-danger" href="<?= base_url('admin/delete_member/') . $m['id_member']; ?>" onclick="return confirm('Are you sure to delete this data ?');">
                                                         <i class="far fa-trash-alt"></i>
                                                     </a>
                                                 </td>
@@ -70,8 +70,8 @@
         </div>
         <!-- /.container-fluid -->
 
-        <!-- Tambah Plants Modal -->
-        <div class="modal fade" id="tambahplantsModal" tabindex="-1" aria-labelledby="tambahplantsModalLabel" aria-hidden="true">
+        <!-- Tambah Member Modal -->
+        <div class="modal fade" id="tambahmemberModal" tabindex="-1" aria-labelledby="tambahmemberModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -84,35 +84,25 @@
                         <?php
                         }
                         ?>
-                        <h5 class="modal-title" id="tambahkelasModalLabel">New Plants</h5>
+                        <h5 class="modal-title" id="tambahkelasModalLabel">New Member</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="<?php echo base_url(); ?>admin/add_plants" method="post">
+                    <form action="<?php echo base_url(); ?>admin/add_member" method="post">
                         <div class="modal-body">
-                            <!-- <span>ID Kelas</span>
-							<div class="form-group">
-								<input type="text" class="form-control" id="id_kelas" name="id_kelas" placeholder="Masukkan ID Kelas">
-							</div> -->
                             <span>Name</span>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Name of plants">
+                                <input type="text" class="form-control" id="nama_member" name="nama_member" placeholder="Name of member">
                             </div>
-                            <span>Type</span>
+                            <span>User</span>
                             <div class="form-group">
-                                <select class="form-control" name="jenis" id="jenis">
-                                    <option value="Aglaonema">Aglaonema</option>
-                                    <option value="Alocassia">Alocassia</option>
-                                    <option value="Anthurium">Anthurium</option>
-                                    <option value="Calathea">Calathea</option>
-                                    <option value="Epipremnum">Epipremnum</option>
-                                    <option value="Monsterra">Monsterra</option>
-                                    <option value="Philodendron">Philodendron</option>
-                                    <option value="Scindapsus">Scindapsus</option>
-                                    <option value="Scindapsus">Scindapsus</option>
-                                    <option value="Spatyphyllum">Spatyphyllum</option>
-                                    <option value="Syngonium">Syngonium</option>
+                                <select class="form-control" name="user_id" id="user_id">
+                                    <option value="" selected>--Choose user to join--</option>
+                                    <?php foreach ($user as $u) { ?>
+                                        <option value="<?= $u['id_user'] ?>">
+                                            <?php echo $u['id_user'] . ' - ' . $u['nama']; ?></option>
+                                    <?php }; ?>
                                 </select>
                             </div>
                         </div>
@@ -124,45 +114,38 @@
                 </div>
             </div>
         </div>
-        <!-- End Tambah Kelas Modal -->
+        <!-- End Tambah Member Modal -->
 
-        <!-- Plants Edit Modal -->
-        <?php foreach ($plants as $p) : ?>
-            <div class="modal fade" id="editplantsModal<?= $p['id_plants'] ?>" tabindex="-1" kelas="dialog" aria-labelledby="editplantsModal<?= $p['id_plants']; ?>Label" aria-hidden="true">
+        <!-- Member Edit Modal -->
+        <?php foreach ($member as $m) : ?>
+            <div class="modal fade" id="editmemberModal<?= $m['id_member'] ?>" tabindex="-1" kelas="dialog" aria-labelledby="editmemberModal<?= $m['id_member']; ?>Label" aria-hidden="true">
                 <div class="modal-dialog" kelas="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editMenuModal<?= $p['id_plants'] ?>">Plants Edit</h5>
+                            <h5 class="modal-title" id="editMenuModal<?= $m['id_member'] ?>">Member Edit</h5>
                             <buttond type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </buttond>
                         </div>
-                        <form action="<?= base_url('admin/edit_plants/' . $p['id_plants']); ?>" method="post">
+                        <form action="<?= base_url('admin/edit_member/' . $m['id_member']); ?>" method="post">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <span>Plants ID</span>
-                                    <input type="text" class="form-control" readonly value="<?= $p['id_plants']; ?>" id="id_plants" name="id_plants">
+                                    <span>Member ID</span>
+                                    <input type="text" class="form-control" readonly value="<?= $m['id_member']; ?>" id="id_member" name="id_member">
                                 </div>
                                 <div class="form-group">
                                     <span>Nama</span>
-                                    <input type="text" class="form-control" value="<?= $p['nama']; ?>" id="nama" name="nama" placeholder="Name of plants">
+                                    <input type="text" class="form-control" value="<?= $m['nama_member']; ?>" id="_membernama_member" name="nama_member" placeholder="Name of member">
                                 </div>
 
-                                <span>Type</span>
+                                <span>User</span>
                                 <div class="form-group">
-                                    <select class="form-control" name="jenis" id="jenis">
-                                        <option value="<?= $p['jenis']; ?>" selected><?php echo $p['jenis']; ?></option>
-                                        <option value="Aglaonema">Aglaonema</option>
-                                        <option value="Alocassia">Alocassia</option>
-                                        <option value="Anthurium">Anthurium</option>
-                                        <option value="Calathea">Calathea</option>
-                                        <option value="Epipremnum">Epipremnum</option>
-                                        <option value="Monsterra">Monsterra</option>
-                                        <option value="Philodendron">Philodendron</option>
-                                        <option value="Scindapsus">Scindapsus</option>
-                                        <option value="Scindapsus">Scindapsus</option>
-                                        <option value="Spatyphyllum">Spatyphyllum</option>
-                                        <option value="Syngonium">Syngonium</option>
+                                    <select class="form-control" name="user_id" id="user_id">
+                                        <option value="<?= $m['user_id'] ?>" selected><?php echo $m['id_user'] . ' - ' . $m['nama']; ?></option>
+                                        <?php foreach ($user as $u) { ?>
+                                            <option value="<?= $u['id_user'] ?>">
+                                                <?php echo $u['id_user'] . ' - ' . $u['nama']; ?></option>
+                                        <?php }; ?>
                                     </select>
                                 </div>
                             </div>

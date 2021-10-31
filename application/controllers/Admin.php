@@ -188,6 +188,64 @@ class Admin extends CI_Controller
 
     // End of user
 
+    // Start of member
+    public function get_member()
+    {
+        $data['username'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+
+        $data['title'] = 'Member';
+
+        $this->load->model('member_model', 'member');
+        $data['member'] = $this->member->get_member();
+        $this->load->model('user_model', 'user');
+        $data['user'] = $this->user->get_user_user();
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('templates/admin_sidebar');
+        $this->load->view('templates/admin_topbar', $data);
+        $this->load->view('admin/member', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function add_member()
+    {
+        $this->form_validation->set_rules('nama_member', 'Name of Plants', 'required');
+        $this->form_validation->set_rules('user_id', 'User ID', 'required');
+
+        if ($this->form_validation->run() == true) {
+            $data['nama_member'] = $this->input->post('nama_member');
+            $data['user_id'] = $this->input->post('user_id');
+
+            $this->load->model('member_model', 'member');
+            $this->member->add_member($data);
+            $this->load->model('user_model', 'user');
+            $data['user'] = $this->user->get_user_user();
+            $this->session->set_flashdata('member_message', '<div class="alert alert-success" role="alert">Input member success!</div>');
+            redirect('admin/get_member');
+        } else {
+            $this->session->set_flashdata('member_message', '<div class="alert alert-danger" role="alert">Input member failed!</div>');
+            redirect('admin/get_member');
+        }
+    }
+
+    public function edit_member($id)
+    {
+        $this->db->update('member', ['nama_member' => $this->input->post('nama_member')], ['id_member' => $id]);
+        $this->db->update('member', ['user_id' => $this->input->post('user_id')], ['id_member' => $id]);
+        $this->session->set_flashdata('member_message', '<div class="alert alert-success" role="alert">Member update success!</div>');
+        redirect('admin/get_member', 'refresh');
+    }
+
+    public function delete_member($id)
+    {
+        $this->load->model('member_model', 'member');
+        $this->member->delete_member($id);
+        // untuk flashdata mempunyai 2 parameter (nama flashdata/alias, isi dari flashdatanya)
+        $this->session->set_flashdata('member_message', '<div class="alert alert-success" role="alert">Delete member success!</div>');
+        redirect('admin/get_member', 'refresh');
+    }
+    // End of member
+
 }
 
 /* End of file Admin.php */
